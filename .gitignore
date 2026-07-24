@@ -1,0 +1,7 @@
+# IDE extensions & system files
+extensions/
+.system_generated/
+*.log
+.gemini/
+brain/
+mingit/
