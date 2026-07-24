@@ -37,6 +37,21 @@ document.addEventListener('DOMContentLoaded', () => {
       featured: true
     },
     {
+      id: 'work-royal-galleon-ship',
+      title: 'Royal Maritime Wooden Galleon Ship Model',
+      category: 'Decor',
+      categorySlug: 'decor',
+      wood: 'Handcrafted Solid Teak, Intricate Canvas Sails & Rigging',
+      dimensions: '150 cm × 50 cm × 130 cm (59" × 20" × 51")',
+      finish: 'Polished Amber Oil & Natural Wax Finish',
+      timeTaken: '210 Hours Artisan Handcrafting',
+      year: '2026',
+      image: 'assets/work_galleon_marble_display.jpg',
+      story: 'A spectacular hand-carved wooden flagship galleon model featuring layered deck structures, carved figurehead bow, full canvas sails, intricate standing rigging, and ornate hull detailing displayed on an exhibition pedestal.',
+      materials: ['Solid Teak Wood', 'Woven Canvas Sails', 'Fine Rigging Cordage', 'Polished Amber Oil'],
+      featured: true
+    },
+    {
       id: 'work-ocean-diorama',
       title: '3D Ocean Wave Diorama with Galleon Ship',
       category: 'Modern Art',
@@ -923,6 +938,7 @@ document.addEventListener('DOMContentLoaded', () => {
       'assets/work_vintage_balcony_relief.jpg',
       'assets/about_artisan_work.jpg',
       'assets/work_grand_galleon.jpg',
+      'assets/work_galleon_marble_display.jpg',
       'assets/work_ocean_diorama.jpg',
       'assets/work_locomotive.jpg',
       'assets/work_travel_desk_car.jpg',

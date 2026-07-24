@@ -9,6 +9,7 @@ def generate_video():
     image_files = [
         'assets/about_artisan_work.jpg',
         'assets/work_grand_galleon.jpg',
+        'assets/work_galleon_marble_display.jpg',
         'assets/work_ocean_diorama.jpg',
         'assets/work_locomotive.jpg',
         'assets/work_travel_desk_car.jpg',
