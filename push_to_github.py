@@ -28,7 +28,7 @@ def push_with_token(token):
         "User-Agent": "Woodpecker-Uploader"
     }
     files = get_files_to_upload()
-    print(f"\n🚀 Uploading {len(files)} project files to https://github.com/{REPO_OWNER}/{REPO_NAME}...\n")
+    print(f"\nUploading {len(files)} project files to https://github.com/{REPO_OWNER}/{REPO_NAME}...\n")
     
     success_count = 0
     for filepath in files:
@@ -55,12 +55,12 @@ def push_with_token(token):
                 
             req_put = urllib.request.Request(url, data=json.dumps(payload).encode("utf-8"), headers=headers, method="PUT")
             with urllib.request.urlopen(req_put) as resp:
-                print(f" ✓ Uploaded {filepath}")
+                print(f" [OK] Uploaded {filepath}")
                 success_count += 1
         except Exception as e:
-            print(f" ❌ Failed to upload {filepath}: {e}")
+            print(f" [FAIL] Failed to upload {filepath}: {e}")
             
-    print(f"\n🎉 Successfully uploaded {success_count}/{len(files)} files to https://github.com/{REPO_OWNER}/{REPO_NAME}!")
+    print(f"\nSuccessfully uploaded {success_count}/{len(files)} files to https://github.com/{REPO_OWNER}/{REPO_NAME}!")
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
