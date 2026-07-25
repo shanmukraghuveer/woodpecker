@@ -613,159 +613,43 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- LOCATION & CONTACT SERVICES ---
   function initLocationAndContactServices() {
-    const copyEmailBtn = document.getElementById('copy-email-btn');
-    const emailLink = document.getElementById('email-link');
-
-    if (copyEmailBtn) {
-      copyEmailBtn.addEventListener('click', () => {
-        const emailText = document.getElementById('display-email').textContent;
-        navigator.clipboard.writeText(emailText).then(() => {
-          const origText = copyEmailBtn.textContent;
-          copyEmailBtn.textContent = '✓ Copied to Clipboard!';
-          copyEmailBtn.style.background = 'var(--accent-gold)';
-          copyEmailBtn.style.color = '#0b0908';
-          setTimeout(() => {
-            copyEmailBtn.textContent = origText;
-            copyEmailBtn.style.background = '';
-            copyEmailBtn.style.color = '';
-          }, 2000);
-        });
-      });
-    }
-
-    if (emailLink) {
-      emailLink.addEventListener('click', (e) => {
-        e.preventDefault();
-        const targetEmail = 'woodpeckers.stop@gmail.com';
-        if (navigator.clipboard) navigator.clipboard.writeText(targetEmail);
-
-        // Open Gmail Web Composer in new tab (works reliably everywhere)
-        const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${targetEmail}&su=Handcraft%20Commission%20Inquiry%20-%20Woodpecker`;
-        window.open(gmailUrl, '_blank');
-
-        // Also trigger mailto fallback
-        setTimeout(() => {
-          window.location.href = `mailto:${targetEmail}?subject=Handcraft%20Commission%20Inquiry%20-%20Woodpecker`;
-        }, 300);
-      });
-    }
+    // Location and Workshop contact service initializers
   }
 
-  // --- WHATSAPP SERVICES ---
-  function initWhatsAppServices() {
-    const waFormBtn = document.getElementById('send-whatsapp-form-btn');
-    if (!waFormBtn) return;
-
-    waFormBtn.addEventListener('click', () => {
-      const name = document.getElementById('comm-name').value.trim() || 'Valued Patron';
-      const email = document.getElementById('comm-email').value.trim() || 'N/A';
-      const phone = document.getElementById('comm-phone').value.trim() || 'N/A';
-      const type = document.getElementById('comm-type').value || 'Bespoke Craft Idea';
-      const channel = document.getElementById('comm-channel') ? document.getElementById('comm-channel').value : 'WhatsApp Consultation';
-      const message = document.getElementById('comm-message').value.trim() || 'I am interested in inquiring about a custom woodcraft piece.';
-
-      const formattedMsg = `*WOODPECKERS ORDER & CRAFT INQUIRY*\n` +
-        `👤 *Name:* ${name}\n` +
-        `✉️ *Email:* ${email}\n` +
-        `📞 *Phone:* ${phone}\n` +
-        `🎨 *Craft Category:* ${type}\n` +
-        `💬 *Preferred Contact:* ${channel}\n` +
-        `📝 *Craft Idea & Specs:* ${message}`;
-
-      const targetPhone = document.getElementById('display-phone').textContent.replace(/[^0-9]/g, '') || '919849342401';
-      const waUrl = `https://wa.me/${targetPhone}?text=${encodeURIComponent(formattedMsg)}`;
-      window.open(waUrl, '_blank');
-    });
-  }
-
-  // --- REAL EMAIL SUBMISSION SERVICE & COMMISSION FORM ---
+  // --- DIRECT WHATSAPP COMMISSION FORM SERVICE ---
   initCommissionForm();
 
   function initCommissionForm() {
     const form = document.getElementById('commission-form');
     if (!form) return;
 
-    form.addEventListener('submit', async (e) => {
+    form.addEventListener('submit', (e) => {
       e.preventDefault();
-      const submitBtn = form.querySelector('button[type="submit"]');
-      const origText = submitBtn.textContent;
-      submitBtn.textContent = '⏳ Sending Inquiry...';
-      submitBtn.disabled = true;
 
-      const name = document.getElementById('comm-name').value.trim();
-      const email = document.getElementById('comm-email').value.trim();
-      const phone = document.getElementById('comm-phone').value.trim();
-      const type = document.getElementById('comm-type').value;
-      const channel = document.getElementById('comm-channel') ? document.getElementById('comm-channel').value : 'Email';
-      const message = document.getElementById('comm-message').value.trim();
+      const name = document.getElementById('comm-name').value.trim() || 'Valued Patron';
+      const email = document.getElementById('comm-email') ? document.getElementById('comm-email').value.trim() : '';
+      const phone = document.getElementById('comm-phone').value.trim() || 'N/A';
+      const type = document.getElementById('comm-type').value || 'Bespoke Woodcraft Idea';
+      const channel = document.getElementById('comm-channel') ? document.getElementById('comm-channel').value : 'WhatsApp Direct Consultation';
+      const message = document.getElementById('comm-message').value.trim() || 'I am interested in enquiring about a custom woodcraft piece.';
 
-      const accessKeyInput = document.getElementById('web3forms-key');
-      const accessKey = accessKeyInput ? accessKeyInput.value.trim() : '';
-
-      if (accessKey) {
-        try {
-          const res = await fetch('https://api.web3forms.com/submit', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              access_key: accessKey,
-              name: name,
-              email: email,
-              phone: phone,
-              category: type,
-              contact_mode: channel,
-              message: message,
-              subject: `New Craft Commission Inquiry from ${name}`
-            })
-          });
-          const result = await res.json();
-          if (result.success) {
-            submitBtn.textContent = '✓ Inquiry Sent Directly!';
-            alert(`Thank you, ${name}! Your inquiry has been sent directly to woodpeckers.stop@gmail.com.`);
-            form.reset();
-            setTimeout(() => {
-              submitBtn.textContent = origText;
-              submitBtn.disabled = false;
-            }, 3000);
-            return;
-          }
-        } catch (err) {
-          console.warn('Web3Forms delivery fallback to mailto:', err);
-        }
+      let formattedMsg = `*WOODPECKERS ORDER & CRAFT ENQUIRY*\n` +
+        `👤 *Name:* ${name}\n`;
+      
+      if (email) {
+        formattedMsg += `✉️ *Email:* ${email}\n`;
       }
+      
+      formattedMsg += `📞 *Phone:* ${phone}\n` +
+        `🎨 *Craft Category:* ${type}\n` +
+        `💬 *Preferred Contact:* ${channel}\n\n` +
+        `📝 *Craft Idea & Specs:*\n${message}`;
 
-      // Default Mailto Fallback (Opens Default Mail App with Pre-filled Form Data)
-      openMailtoFallback(name, email, phone, type, channel, message);
-      submitBtn.textContent = '✓ Mail App Opened!';
-      setTimeout(() => {
-        submitBtn.textContent = origText;
-        submitBtn.disabled = false;
-      }, 2500);
+      const displayPhoneElem = document.getElementById('display-phone');
+      const targetPhone = displayPhoneElem ? displayPhoneElem.textContent.replace(/[^0-9]/g, '') : '919849342401';
+      const waUrl = `https://wa.me/${targetPhone}?text=${encodeURIComponent(formattedMsg)}`;
+      window.open(waUrl, '_blank');
     });
-  }
-
-  function openMailtoFallback(name, email, phone, type, channel, message) {
-    const targetEmail = 'woodpeckers.stop@gmail.com';
-    const subjectText = `Handcraft Commission Inquiry from ${name} - Woodpecker`;
-    const subject = encodeURIComponent(subjectText);
-    const plainBody = `Patron Name: ${name}\nPatron Email: ${email}\nPatron Phone: ${phone}\nCraft Category: ${type}\nPreferred Contact Mode: ${channel}\n\nCraft Vision & Specs:\n${message}`;
-    const body = encodeURIComponent(plainBody);
-
-    // Copy formatted email content to clipboard so patron never loses their typed details
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(`To: ${targetEmail}\nSubject: ${subjectText}\n\n${plainBody}`);
-    }
-
-    // 1. Open Gmail Web Composer in a new tab (Works 100% reliably on all browsers & OS without mail app setup)
-    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${targetEmail}&su=${subject}&body=${body}`;
-    window.open(gmailUrl, '_blank');
-
-    // 2. Also trigger native mailto protocol
-    setTimeout(() => {
-      window.location.href = `mailto:${targetEmail}?subject=${subject}&body=${body}`;
-    }, 400);
-
-    alert(`✓ Email App / Gmail Composer Opened!\n\nYour message details have been pre-filled for woodpeckers.stop@gmail.com (and copied to your clipboard).`);
   }
 
   // --- INTENTIONAL DESIGN & PLACEMENT PANEL CONTROLLER ---

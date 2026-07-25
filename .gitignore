@@ -5,3 +5,5 @@ extensions/
 .gemini/
 brain/
 mingit/
+scratch/
+argv.json
