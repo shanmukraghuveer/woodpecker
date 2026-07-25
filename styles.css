@@ -1290,7 +1290,7 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: var(--shadow-gold);
 }
 
-/* Workshop & Behind the Scenes */
+/* Atelier & Behind the Scenes */
 .workshop-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

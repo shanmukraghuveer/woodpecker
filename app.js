@@ -613,7 +613,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- LOCATION & CONTACT SERVICES ---
   function initLocationAndContactServices() {
-    // Location and Workshop contact service initializers
+    // Location and Atelier contact service initializers
   }
 
   // --- DIRECT WHATSAPP COMMISSION FORM SERVICE ---
